@@ -9,12 +9,12 @@ terraform {
   backend "s3" {
     bucket         = "s3-backend-bucket-terraform-eks"
     key            = "terraform.tfstate"
-    region         = "us-west-2"
+    region         = var.region
     dynamodb_table = "terraform-lock-table"
     encrypt        = true
   }
 }
 
 provider "aws" {
-    region = "var.region"
+    region = var.region
 }
