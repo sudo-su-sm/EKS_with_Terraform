@@ -14,3 +14,7 @@ terraform {
     encrypt        = true
   }
 }
+
+provider "aws" {
+    region = "var.region"
+}
