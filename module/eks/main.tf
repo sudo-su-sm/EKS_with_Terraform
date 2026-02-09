@@ -1,3 +1,26 @@
+/*
+Create IAM role for EKS Cluster
+  - Trusts eks.amazonaws.com
+  - Attach policy AmazonEKSClusterPolicy
+
+Create EKS Cluster
+  - Set cluster name & Kubernetes version
+  - Attach cluster IAM role
+  - Provide VPC subnet IDs
+
+Create IAM role for Worker Nodes
+  - Trusts ec2.amazonaws.com
+  - Attach Policies:
+    - AmazonEKSWorkerNodePolicy
+    - AmazonEKS_CNI_Policy
+    - AmazonEC2ContainerRegistryReadOnly
+
+Create Node Group
+  - Link to EKS cluster
+  - Use node IAM role
+  - Select subnets & instance type
+*/
+
 resource "aws_iam_role" "cluster" {
   name = "${var.cluster_name}-cluster-role"
 
