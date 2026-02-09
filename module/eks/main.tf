@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "node_policy" {
 }
 
 resource "aws_eks_node_group" "main" {
-  for_each = var.node_groups # Assuming node_groups is a map of node group configurations
+  for_each = var.node_groups # as we have multiple node groups, we will use for_each to create a node group for each entry in the node_groups variable map
 
   cluster_name    = aws_eks_cluster.main.name
   node_group_name = each.key  # Use the key of the node group map as the name of the node group
@@ -93,11 +93,12 @@ resource "aws_eks_node_group" "main" {
   instance_types = each.value.instance_types # Assuming each node group configuration includes a list of instance types
   capacity_type  = each.value.capacity_type # Assuming each node group configuration includes a capacity type (e.g., "ON_DEMAND" or "SPOT")
 
+  # now will add autoscaling configuration for the node group
   scaling_config {
     desired_size = each.value.scaling_config.desired_size
     max_size     = each.value.scaling_config.max_size
     min_size     = each.value.scaling_config.min_size
-  }   # Assuming each node group configuration includes a scaling_config block with desired_size, max_size, and min_size
+  }
 
   depends_on = [
     aws_iam_role_policy_attachment.node_policy
