@@ -7,7 +7,7 @@ resource "aws_iam_role" "cluster" {
       Action = "sts:AssumeRole"
       Effect = "Allow"
       Principal = {
-        Service = "eks.amazonaws.com"
+        Service = "eks.amazonaws.com" # eks service assumes this role
       }
     }]
   })
@@ -16,7 +16,7 @@ resource "aws_iam_role" "cluster" {
 
 resource "aws_iam_role_policy_attachment" "cluster_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.cluster.name
+  role       = aws_iam_role.cluster.name # Attach the EKS Cluster Policy to the cluster role
 }
 
 resource "aws_eks_cluster" "main" {
@@ -42,7 +42,7 @@ resource "aws_iam_role" "node" {
       Action = "sts:AssumeRole"
       Effect = "Allow"
       Principal = {
-        Service = "ec2.amazonaws.com"
+        Service = "ec2.amazonaws.com"  # ec2 service assumes this role
       }
     }]
   })
